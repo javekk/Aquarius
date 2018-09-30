@@ -9,18 +9,14 @@
 
 
 //Global variables
-var areaWidth;  //visible area width
-var areaHeight; //visible area height
-var gameAreaDimScale = 3; //how big(in times) respect to the visible area?
-
+var areaWidth;
+var areaHeight;
 var SPEED = 4;
 var FPS = 60;
 
-var maxNumberOfComponents = 300;
-
 //Main components
 var mainC;
-var sCs = new Set();
+var sCs = [];
 
 window.onload = function() {
     init();
@@ -29,10 +25,15 @@ window.onload = function() {
 
 //Init function
 function init(){
-
     area.init();
 
     mainC = new MainC();
+
+    for(var i = 0; i < 1000; i++){
+        sCs.push(new SquareComponent( 20 ,20,"red", (Math.random()*5000) % 5000, (Math.random()*5000) % 5000));
+        sCs.push(new SquareComponent( 20 ,20,"yellow", (Math.random()*5000) , (Math.random()*5000) ));
+        sCs.push(new SquareComponent( 20 ,20,"blue", (Math.random()*5000), (Math.random()*5000)));
+    }
 };
 
 
@@ -50,29 +51,23 @@ var area = {
         areaWidth = area.canvas.width;
         areaHeight = area.canvas.height;
 
-        this.ctx.translate(areaHeight / 2, areaWidth / 2);
-
         this.interval = setInterval(update, (1000/FPS));
 
         //Listeners for keys
         window.addEventListener('keydown', function (e) {
             area.keys = (area.keys || []);
             area.keys[e.keyCode] = (e.type == "keydown");
-        });
+        })
         window.addEventListener('keyup', function (e) {
             area.keys[e.keyCode] = (e.type == "keydown");            
-        });
-
-        //Create components
-        creator.create(true);
-
+        })
     },
     clear : function() {
-        this.ctx.clearRect(-(areaWidth / 2), -(areaHeight / 2), this.canvas.width, this.canvas.height);
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     }   
 };
 
-//Our ship
+
 function MainC(){
 
     this.angle = 0;
@@ -83,6 +78,7 @@ function MainC(){
         
         ctx = area.ctx;
 
+        ctx.translate(areaWidth / 2, areaHeight /2 );
         ctx.rotate(this.angle);
 
         ctx.beginPath();
@@ -93,6 +89,7 @@ function MainC(){
         ctx.fillStyle = "green";
         ctx.fill();
         ctx.rotate(-this.angle);
+        ctx.translate(-(areaWidth / 2),-(areaHeight / 2));
         
     }
     
@@ -103,7 +100,7 @@ function MainC(){
 
 //Function to create a square componets 
 function SquareComponent(width, height, color, x, y) {
-
+    
     //Actual size
     this.width = width;
     this.height = height;
@@ -112,30 +109,22 @@ function SquareComponent(width, height, color, x, y) {
     this.x = x;
     this.y = y;    
 
+    //Angle
+    this.angle = 0;
+
     this.update = function(){
 
         ctx = area.ctx;
         ctx.fillStyle = color;
-        //Draw the object
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
     
     this.newPos = function(move, angleDif) {      
 
-        this.x += (move * SPEED) * Math.sin(mainC.angle);
-        this.y -= (move * SPEED) * Math.cos(mainC.angle);     
-        
-        //kill me if I am out of the game area
-        if(Math.abs(this.x) > (areaWidth * gameAreaDimScale) / 2  ||   Math.abs(this.y) > (areaHeight * gameAreaDimScale) / 2){
-               this.killMe();
-        }
+        this.angle += (angleDif * Math.PI / 180) * SPEED;
+        this.x += (move * SPEED) * Math.sin(this.angle);
+        this.y -= (move * SPEED) * Math.cos(this.angle);        
     }   
-
-    this.killMe = function(){
-        sCs.delete(this);
-        creator.actualNumberOfComponents--;
-        creator.create();
-    }
 }
 
 
@@ -169,55 +158,10 @@ function update(){
     }
 
     //Update the componet
-    sCs.forEach(function(entry){
-        entry.newPos(move, angleDif);    
-        entry.update();
-    });
+    for(var i = 0; i < sCs.length; i++){
+        sCs[i].newPos(move, angleDif);    
+        sCs[i].update();
+    }
     mainC.update(move, angleDif);
 }
 
-//Creator
-var creator = {
-    
-    actualNumberOfComponents : 0 ,
-
-  
-    //Create only outside the visible area
-    //if init it will create even in the visible area
-    create : function(init){
-        while(this.actualNumberOfComponents < maxNumberOfComponents){
-
-            //Random color
-            var color = "red";
-            switch(Math.round(Math.random()*4)){
-                case 2 : color = "blue"; break;
-                case 3 : color = "yellow"; break;
-            }
-            
-            //Max possible values
-            var mX = ((areaWidth * gameAreaDimScale) / 2);
-            var mY = ((areaHeight * gameAreaDimScale) / 2);
-        
-            //not so random directions
-            if(Math.round(Math.random()*4) % 2 == 0) mX = -mX;
-            if(Math.round(Math.random()*4) % 2 == 0) mY = -mY;
-
-            //make some tricks
-            var x = Math.random() * mX;
-            var y = Math.random() * mY;
-
-            if(!init){
-                while(Math.abs(x) < areaWidth / 2 && Math.abs(y) < areaHeight / 2){
-                    x = Math.random() * mX;
-                    y = Math.random() * mY;
-                }
-            }
-
-            sCs.add(new SquareComponent( 20 ,20, color, x, y));
-            
-            //keep the count
-            this.actualNumberOfComponents++;
-        }
-    }
-
-}

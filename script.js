@@ -14,9 +14,9 @@ var areaHeight; //visible area height
 var gameAreaDimScale = 3; //how big(in times) respect to the visible area?
 
 var SPEED = 4;
-var FPS = 60;
+var FPS = 120;
 
-var maxNumberOfComponents = 300;
+var maxNumberOfComponents = 30;
 
 //Main components
 var mainC;
@@ -50,7 +50,7 @@ var area = {
         areaWidth = area.canvas.width;
         areaHeight = area.canvas.height;
 
-        this.ctx.translate(areaHeight / 2, areaWidth / 2);
+        this.ctx.translate(areaWidth / 2, areaHeight  / 2);
 
         this.interval = setInterval(update, (1000/FPS));
 
@@ -72,6 +72,7 @@ var area = {
     }   
 };
 
+
 //Our ship
 function MainC(){
 
@@ -92,8 +93,7 @@ function MainC(){
 
         ctx.fillStyle = "green";
         ctx.fill();
-        ctx.rotate(-this.angle);
-        
+        ctx.rotate(-this.angle);   
     }
     
     this.newPos = function() {
@@ -112,12 +112,26 @@ function SquareComponent(width, height, color, x, y) {
     this.x = x;
     this.y = y;    
 
+    this.color = color;
+
     this.update = function(){
 
+        /*
         ctx = area.ctx;
         ctx.fillStyle = color;
         //Draw the object
         ctx.fillRect(this.x, this.y, this.width, this.height);
+        */
+       area.ctx.beginPath();
+       area.ctx.arc(this.x, this.y, 80, 0, 2 * Math.PI, false);
+       area.ctx.strokeStyle = this.color;
+       area.ctx.lineWidth = 3;
+       area.ctx.stroke();
+       area.ctx.closePath();
+
+       createArcF(area.ctx, this.x, this.y, 6 , 80, this.color, 3);
+       createArcF(area.ctx, this.x, this.y, 6 , 96, this.color, 3, Math.PI / 6);
+       
     }
     
     this.newPos = function(move, angleDif) {      
@@ -146,7 +160,7 @@ function update(){
     
     //Get user feedbacks
     var move = 0;
-    var angleDif = 0;
+    var angleDif = 0
 
     //leftward
     if (area.keys && area.keys[37]) {angleDif = -1; }
@@ -176,11 +190,11 @@ function update(){
     mainC.update(move, angleDif);
 }
 
+
 //Creator
 var creator = {
     
     actualNumberOfComponents : 0 ,
-
   
     //Create only outside the visible area
     //if init it will create even in the visible area
@@ -219,5 +233,4 @@ var creator = {
             this.actualNumberOfComponents++;
         }
     }
-
 }

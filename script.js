@@ -125,18 +125,18 @@ function SquareComponent(width, height, color, x, y) {
         //Draw the object
         ctx.fillRect(this.x, this.y, this.width, this.height);
    
-
+        
        area.ctx.beginPath();
        area.ctx.arc(this.x, this.y, 80, 0, 2 * Math.PI, false);
        area.ctx.strokeStyle = this.color;
        area.ctx.lineWidth = 3;
        area.ctx.stroke();
        area.ctx.closePath();
-
+        /*
        createArcF(area.ctx, this.x, this.y, 6 , 80, this.color, 3, 0);
 
        createArcF(area.ctx, this.x, this.y, 6 , 96, this.color, 3, 0+ (Math.PI / 6));
-     */
+        */
        
         area.ctx.beginPath();
         area.ctx.arc(this.x, this.y, 0, 2 * Math.PI, false);
@@ -171,7 +171,7 @@ function SquareComponent(width, height, color, x, y) {
         colorWOW(area.ctx);
 
         FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 250, "WOW", 3, 1);
-
+        
     }
     
     this.newPos = function(move, angleDif) {    

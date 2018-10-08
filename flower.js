@@ -1,4 +1,4 @@
-
+/*
 var SPEED = 4;
 var FPS = 50;
     
@@ -19,7 +19,7 @@ var area = {
         context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
     }   
 };
-
+*/
 function draw() {
 
     context.beginPath();
@@ -60,14 +60,14 @@ function draw() {
 
 var FlowerArcEi = {
     
-    moveAngleAni : 0.0001,
+    moveAngleAni : 0.00001,
 
     drawFA : function (context, centerX, centerY, howManyPetals, internalRadius, strokeStyle, lineWidth, rotation) {
         
         context.translate(centerX, centerY);
 
         context.rotate(0);
-        this.moveAngleAni = this.moveAngleAni >= Math.PI * 2 ? 0 : Math.abs(this.moveAngleAni) + Math.PI * 0.0001;
+        this.moveAngleAni = this.moveAngleAni >= Math.PI * 2 ? 0 : Math.abs(this.moveAngleAni) + Math.PI * 0.00001;
         context.rotate(this.moveAngleAni * rotation);
 
         var rotAngle = ((Math.PI * 2) / howManyPetals) / 2;
@@ -141,7 +141,7 @@ var scalY = {
 var colorizeC = {
     t : 0 ,
     colorize : function() {
-        this.t = this.t + 0.002 * Math.random();
+        this.t = this.t + 0.0002 * Math.random();
         var x = scalX.nextX();
         var y = scalY.nextY();
         return col(R(x, y, this.t), G(x, y, this.t), B(x, y, this.t));
@@ -153,7 +153,7 @@ function colorWOW(context){
     context.stroke();   
 }
 
-
+/*
 window.onload = function(){
     
     areaWidth = canvas.width;
@@ -164,3 +164,4 @@ window.onload = function(){
     this.interval = setInterval(area.draw, (1000/FPS));
     
 }
+*/

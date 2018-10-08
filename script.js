@@ -16,11 +16,12 @@ var gameAreaDimScale = 3; //how big(in times) respect to the visible area?
 var SPEED = 4;
 var FPS = 120;
 
-var maxNumberOfComponents = 30;
+var maxNumberOfComponents = 10;
 
 //Main components
 var mainC;
 var sCs = new Set();
+
 
 window.onload = function() {
     init();
@@ -114,6 +115,8 @@ function SquareComponent(width, height, color, x, y) {
 
     this.color = color;
 
+    this.angle = 0;
+
     this.update = function(){
 
         /*
@@ -121,7 +124,8 @@ function SquareComponent(width, height, color, x, y) {
         ctx.fillStyle = color;
         //Draw the object
         ctx.fillRect(this.x, this.y, this.width, this.height);
-        */
+   
+
        area.ctx.beginPath();
        area.ctx.arc(this.x, this.y, 80, 0, 2 * Math.PI, false);
        area.ctx.strokeStyle = this.color;
@@ -129,12 +133,48 @@ function SquareComponent(width, height, color, x, y) {
        area.ctx.stroke();
        area.ctx.closePath();
 
-       createArcF(area.ctx, this.x, this.y, 6 , 80, this.color, 3);
-       createArcF(area.ctx, this.x, this.y, 6 , 96, this.color, 3, Math.PI / 6);
+       createArcF(area.ctx, this.x, this.y, 6 , 80, this.color, 3, 0);
+
+       createArcF(area.ctx, this.x, this.y, 6 , 96, this.color, 3, 0+ (Math.PI / 6));
+     */
        
+        area.ctx.beginPath();
+        area.ctx.arc(this.x, this.y, 0, 2 * Math.PI, false);
+        area.ctx.strokeStyle = 'black';
+        area.ctx.lineWidth = 5;
+        area.ctx.stroke();
+        colorWOW(area.ctx);
+
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 100, "WOW", 3, 1);
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 122, "WOW", 3, -1);
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 150, "WOW", 3, 1);
+
+        area.ctx.beginPath();
+        area.ctx.arc( this.x, this.y, 187, 0, 2 * Math.PI, false);
+        area.ctx.lineWidth = 3;
+        area.ctx.stroke();
+        colorWOW(area.ctx);
+
+        area.ctx.beginPath();
+        area.ctx.arc(this.x, this.y, 206, 0, 2 * Math.PI, false);
+        area.ctx.lineWidth = 3;
+        area.ctx.stroke();
+        colorWOW(area.ctx);
+
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 8, 206, "WOW", 3, -1);
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 225, "WOW", 3, 0);
+
+        area.ctx.beginPath();
+        area.ctx.arc(area.ctx, this.x, this.y, 247, 0, 2 * Math.PI, false);
+        area.ctx.lineWidth = 3;
+        area.ctx.stroke();
+        colorWOW(area.ctx);
+
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 250, "WOW", 3, 1);
+
     }
     
-    this.newPos = function(move, angleDif) {      
+    this.newPos = function(move, angleDif) {    
 
         this.x += (move * SPEED) * Math.sin(mainC.angle);
         this.y -= (move * SPEED) * Math.cos(mainC.angle);     
@@ -234,3 +274,4 @@ var creator = {
         }
     }
 }
+

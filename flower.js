@@ -13,14 +13,14 @@ var areaHeight;
 var area = {
     draw : function(){
         area.clear();
-        draw();
+        drawFlower();
     } ,
     clear : function() {
         context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
     }   
 };
 */
-function draw() {
+function drawFlower() {
 
     context.beginPath();
     context.arc(0, 0, 100, 0, 2 * Math.PI, false);
@@ -60,16 +60,20 @@ function draw() {
 
 var FlowerArcEi = {
     
+    //Angle used in the animation
     moveAngleAni : 0.00001,
 
     drawFA : function (context, centerX, centerY, howManyPetals, internalRadius, strokeStyle, lineWidth, rotation) {
         
+        //Center of the circle
         context.translate(centerX, centerY);
 
+        //Base on the animation angle step, rotate
         context.rotate(0);
         this.moveAngleAni = this.moveAngleAni >= Math.PI * 2 ? 0 : Math.abs(this.moveAngleAni) + Math.PI * 0.00001;
         context.rotate(this.moveAngleAni * rotation);
 
+        //Trigonometric functions as fuck
         var rotAngle = ((Math.PI * 2) / howManyPetals) / 2;
         var angle = (Math.PI / 2) - (Math.PI - (Math.PI / 2) - rotAngle);
         var h = internalRadius;
@@ -86,6 +90,7 @@ var FlowerArcEi = {
             context.moveTo(0, -h); // A
             context.quadraticCurveTo(k1 / 2, -h - s1, k1, -h); // B, C
             context.quadraticCurveTo(k - (k2 / 2), -h + s2, k, -h); // D, E
+            //mirror
             context.scale(-1, 1);
             context.moveTo(0, -h); // A
             context.quadraticCurveTo(k1 / 2, -h - s1, k1, -h); // B, C
@@ -95,6 +100,7 @@ var FlowerArcEi = {
         }
         context.moveTo(0, -h); // A
         context.closePath();
+        //Stroke
         context.lineWidth = lineWidth;
         if(strokeStyle != "WOW"){
             context.strokeStyle = strokeStyle;
@@ -103,11 +109,15 @@ var FlowerArcEi = {
         else{
             colorWOW(context);
         }
+        //All back to normal
         context.rotate(-this.moveAngleAni * rotation);
         context.translate(-centerX, -centerY);
     }
 }
 
+/*
+ * Color animation   
+ */
 
 function col(r, g, b) {
     return "rgb(" + r + "," + g + "," + b + ")";

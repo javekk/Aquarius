@@ -47,10 +47,11 @@ var RainbowWeever = {
         }
 
         var tmpStartingPoint = -internalRadius - (size / 2);
+        
+        context.beginPath();
         context.moveTo(tmpStartingPoint - ((size / 2) * percentageIncrement) , 0);
         context.lineTo(tmpStartingPoint + (size * percentageIncrement), 0);
         context.stroke();
-        context.closePath();
         
         //Go back  
         context.translate(-centerX, -centerY);

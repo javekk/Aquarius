@@ -41,8 +41,8 @@ var RainbowWeever = {
         var totalFrames = duration;
         
         //Different frame numbers for each step the ratio io 2-6-2
-        var frameStep1 = 150;
-        var frameStep2 = 150;
+        var frameStep1 = 50;
+        var frameStep2 = 100;
         var frameStep3 = 30;
 
         //Stroke
@@ -151,9 +151,9 @@ var RainbowWeever = {
         if(this.actualStep > 4){
 
             //if it is step 5 we use the percentage(same as 2) otherwise the maxium
-            var step2Incr = this.actualStep == 5 ? this.actualIncrement / frameStep2 : 1;
+            var step4Incr = this.actualStep == 5 ? this.actualIncrement / frameStep2 : 1;
 
-            var angle = Math.PI - (Math.PI * (step2Incr+0.00001));
+            var angle = Math.PI - (Math.PI * (step4Incr));
 
             for(var i = 0; i <= 7; i++){
                 var ratio = internalRadius + ((size / 7) * i);
@@ -163,10 +163,33 @@ var RainbowWeever = {
             }
 
             if(this.actualStep == 5 && this.actualIncrement > frameStep2-1){
+                this.actualStep = 6;
+                this.actualIncrement = 1;
+            }
+        }
+
+
+        //=====STEP 6=====
+        //first step, drawing the first line
+        if(this.actualStep > 5){
+
+            //if it is step 1 we use the percentaga otherwise the maxium
+            var step6Incr = this.actualStep == 6 ? this.actualIncrement / frameStep3 : 1;
+
+            var tmpStartingPoint = internalRadius + (size / 2);
+            
+            context.beginPath();
+            context.moveTo(tmpStartingPoint - ((size / 2) * (1-step6Incr)), 0);
+            context.lineTo(tmpStartingPoint + ((size / 2) * (1-step6Incr)), 0);
+            context.stroke();
+            
+            if(this.actualStep == 6 && this.actualIncrement > frameStep3-1){
                 this.actualStep = 1;
                 this.actualIncrement = 1;
             }
         }
+        
+
         //Go back  
         context.translate(-centerX, -centerY);
     }

@@ -45,7 +45,6 @@ var RainbowWeever = {
         var frameStep2 = 300;
         var frameStep3 = 100;
 
-        
         //=====STEP 1=====
         //first step, drawing the first line
         //2 seconds => frames = fps*2
@@ -91,7 +90,26 @@ var RainbowWeever = {
         }
 
         if(this.actualStep > 2){
+            //=====STEP 3=====
+            //Second step, draw two lines clonsing among each other
+            //2 seconds => frames = fps*2
+
+            var step3Incr = this.actualIncrement / frameStep3;
             
+            context.beginPath();
+            context.moveTo(internalRadius , 0);
+            context.lineTo(internalRadius + ((size / 2) * step3Incr), 0);
+            context.stroke();  
+
+            context.beginPath();
+            context.moveTo(externalRadius , 0);
+            context.lineTo(externalRadius - ((size / 2) * step3Incr), 0);
+            context.stroke(); 
+
+            if(this.actualIncrement > frameStep3-1){
+                this.actualStep = 1;
+                this.actualIncrement = 0;
+            }
         }
 
         

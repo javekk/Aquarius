@@ -98,7 +98,7 @@ var RainbowWeever = {
         }
 
         //=====STEP 3=====
-        //Draw the lines to close the rainbow
+        //Draw the lines to open the rainbow
         if(this.actualStep > 2 && this.actualStep < 6){
 
             var step3Incr = this.actualStep == 3 ? this.actualIncrement / frameStep3 : 1;
@@ -140,17 +140,37 @@ var RainbowWeever = {
             context.stroke();
             
             if(this.actualStep == 4 && this.actualIncrement > frameStep1-1){
+                this.actualStep = 5;
+                this.actualIncrement = 1;
+            }
+        }
+
+
+        //=====STEP 5=====
+        //Removing the arcs
+        if(this.actualStep > 4){
+
+            //if it is step 5 we use the percentage(same as 2) otherwise the maxium
+            var step2Incr = this.actualStep == 5 ? this.actualIncrement / frameStep2 : 1;
+
+            var angle = Math.PI - (Math.PI * (step2Incr+0.00001));
+
+            for(var i = 0; i <= 7; i++){
+                var ratio = internalRadius + ((size / 7) * i);
+                context.beginPath();
+                context.arc(centerX, centerY, ratio, 0, -angle, true);
+                context.stroke();
+            }
+
+            if(this.actualStep == 5 && this.actualIncrement > frameStep2-1){
                 this.actualStep = 1;
                 this.actualIncrement = 1;
             }
-
         }
-
         //Go back  
         context.translate(-centerX, -centerY);
     }
 }
-
 
 //Get the context and start the program YEAh :D
 window.onload = function(){
@@ -167,7 +187,6 @@ window.onload = function(){
 /*
  * Color animation   
  */
-
 function col(r, g, b) {
     return "rgb(" + r + "," + g + "," + b + ")";
 }
@@ -188,6 +207,7 @@ var scalX = {
         return Math.round(this.x); 
     }
 }
+
 var scalY = {
     y : 0,
     inc : 0.001,

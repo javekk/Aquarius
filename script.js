@@ -16,7 +16,7 @@ var gameAreaDimScale = 3; //how big(in times) respect to the visible area?
 var SPEED = 4;
 var FPS = 50;
 
-var maxNumberOfComponents = 10;
+var maxNumberOfComponents = 100;
 
 //Main components
 var mainC;
@@ -108,38 +108,50 @@ function SquareComponent(width, height, color, x, y) {
     //Actual size
     this.width = width;
     this.height = height;
-
     //Actual position
     this.x = x;
     this.y = y;    
 
     this.color = color;
-
     this.angle = 0;
 
     this.update = function(){
-
-        /*
         ctx = area.ctx;
-        ctx.fillStyle = color;
+        ctx.fillStyle = this.color;
         //Draw the object
-        area.ctx.fillRect(this.x, this.y, this.width, this.height);
-        */
-        /*
-        area.ctx.beginPath();
-        area.ctx.arc(this.x, this.y, 100, 0, 2 * Math.PI, false);
-        area.ctx.strokeStyle = 'black';
-        area.ctx.lineWidth = 5;
-        area.ctx.stroke();
-        colorWOW(area.ctx);
+        area.ctx.fillRect(this.x, this.y, this.width, this.height);  
+    } 
+    this.newPos = function(move, angleDif) {    
 
-        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 100, "WOW", 3, 1);
-        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 122, "WOW", 3, -1);
+        this.x += (move * SPEED) * Math.sin(mainC.angle);
+        this.y -= (move * SPEED) * Math.cos(mainC.angle);     
         
-        */
-     
-        RainbowWeever.drawStepByStep(area.ctx, this.x, this.y, 100, 300,6,"WOW", 300);
-       
+        //kill me if I am out of the game area
+        if(Math.abs(this.x) > (areaWidth * gameAreaDimScale) / 2  ||   Math.abs(this.y) > (areaHeight * gameAreaDimScale) / 2){
+               this.killMe();
+        }
+    }   
+    this.killMe = function(){
+        sCs.delete(this);
+        creator.actualNumberOfComponents--;
+        creator.create();
+    }
+}
+    //Function to create a square componets 
+function RainbowComponent(width, height, color, x, y) {
+
+    //Actual size
+    this.width = width;
+    this.height = height;
+    //Actual position
+    this.x = x;
+    this.y = y;    
+
+    this.color = color;
+    this.angle = 0;
+
+    this.update = function(){
+        RainbowWeever.drawStepByStep(area.ctx, this.x, this.y, 100, 300,6, color, 300); 
     }
     
     this.newPos = function(move, angleDif) {    
@@ -153,6 +165,40 @@ function SquareComponent(width, height, color, x, y) {
         }
     }   
 
+    this.killMe = function(){
+        sCs.delete(this);
+        creator.actualNumberOfComponents--;
+        creator.create();
+    }
+}
+
+//Function to create a square componets 
+function FlowerComponent(width, height, color, x, y) {
+
+    //Actual size
+    this.width = width;
+    this.height = height;
+    //Actual position
+    this.x = x;
+    this.y = y;    
+
+    this.color = color;
+    this.angle = 0;
+
+    this.update = function(){
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 100, color, 3, 1);
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 122, color, 3, -1);  
+    }
+    this.newPos = function(move, angleDif) {    
+
+        this.x += (move * SPEED) * Math.sin(mainC.angle);
+        this.y -= (move * SPEED) * Math.cos(mainC.angle);     
+        
+        //kill me if I am out of the game area
+        if(Math.abs(this.x) > (areaWidth * gameAreaDimScale) / 2  ||   Math.abs(this.y) > (areaHeight * gameAreaDimScale) / 2){
+               this.killMe();
+        }
+    }   
     this.killMe = function(){
         sCs.delete(this);
         creator.actualNumberOfComponents--;
@@ -214,6 +260,7 @@ var creator = {
             switch(Math.round(Math.random()*4)){
                 case 2 : color = "blue"; break;
                 case 3 : color = "yellow"; break;
+                case 1 : color = "WOW"; break;
             }
             
             //Max possible values
@@ -235,7 +282,12 @@ var creator = {
                 }
             }
 
-            sCs.add(new SquareComponent( 20 ,20, color, x, y));
+            switch(Math.round(Math.random()*4)){
+                case 2 : sCs.add(new SquareComponent( 20 ,20, color, x, y));break;
+                case 3 : sCs.add(new FlowerComponent( 20 ,20, color, x, y)); break;
+                case 1 : sCs.add(new RainbowComponent( 20 ,20, color, x, y)); break;
+            }
+            
             
             //keep the count
             this.actualNumberOfComponents++;

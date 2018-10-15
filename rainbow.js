@@ -1,4 +1,4 @@
-
+/*
 var SPEED = 4;
 var FPS = 50;
     
@@ -20,7 +20,7 @@ var area = {
     }   
 };
 
-
+*/
 var RainbowWeever = {
 
     actualStep : 1,
@@ -196,7 +196,7 @@ var RainbowWeever = {
         context.translate(-centerX, -centerY);
     }
 }
-
+/*
 
 //Get the context and start the program YEAh :D
 window.onload = function(){
@@ -213,7 +213,7 @@ window.onload = function(){
 /*
  * Color animation   
  */
-
+/*
 function col(r, g, b) {
     return "rgb(" + r + "," + g + "," + b + ")";
 }
@@ -259,3 +259,4 @@ function colorWOW(context){
     context.stroke();   
 }
 
+*/

@@ -19,7 +19,7 @@ var area = {
         context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
     }   
 };
-*/
+
 function drawFlower() {
 
     context.beginPath();
@@ -56,7 +56,7 @@ function drawFlower() {
 
     FlowerArcEi.drawFA(context, 0, 0, 5, 250, "WOW", 3, 1);
 };
-
+*/
 
 var FlowerArcEi = {
     

@@ -1,3 +1,4 @@
+
 var SPEED = 4;
 var FPS = 50;
     
@@ -12,7 +13,7 @@ var areaHeight;
 var area = {
     draw : function(){
         area.clear();
-        RainbowWeever.drawStepByStep(context, 0, 0, 100, 200,2,"WOW", 300);
+        RainbowWeever.drawStepByStep(context, 100, 100, 100, 300,6,"WOW", 300);
     } ,
     clear : function() {
         context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
@@ -26,7 +27,7 @@ var RainbowWeever = {
 
     actualIncrement : 1,
 
-    drawStepByStep : function(context, centerX, centerY, internalRadius, externalRadius,stokeSize, strokeStyle, duration){
+    drawStepByStep : function(context, centerX, centerY, internalRadius, externalRadius, stokeSize, strokeStyle, duration){
         
         //Circles center
         context.translate(centerX, centerY);
@@ -53,6 +54,7 @@ var RainbowWeever = {
             context.strokeStyle = strokeStyle
         }
         context.lineWidth = stokeSize;
+        context.lineCap = 'square';
 
 
         //=====STEP 1=====
@@ -62,16 +64,16 @@ var RainbowWeever = {
             //if it is step 1 we use the percentaga otherwise the maxium
             var step1Incr = this.actualStep == 1 ? this.actualIncrement / frameStep1 : 1;
 
-            var tmpStartingPoint = -internalRadius - (size / 2);
+            var tmpStartingPoint = centerX - internalRadius - (size / 2) ;
             
             context.beginPath();
-            context.moveTo(tmpStartingPoint - ((size / 2) * step1Incr) , 0);
-            context.lineTo(tmpStartingPoint + ((size / 2) * step1Incr), 0);
+            context.moveTo(tmpStartingPoint - ((size / 2) * step1Incr) , centerY);
+            context.lineTo(tmpStartingPoint + ((size / 2) * step1Incr), centerY);
             context.stroke();
             
             if(this.actualStep == 1 && this.actualIncrement > frameStep1-1){
                 this.actualStep = 2;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
         
@@ -93,7 +95,7 @@ var RainbowWeever = {
 
             if(this.actualStep == 2 && this.actualIncrement > frameStep2-1){
                 this.actualStep = 3;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
 
@@ -104,18 +106,18 @@ var RainbowWeever = {
             var step3Incr = this.actualStep == 3 ? this.actualIncrement / frameStep3 : 1;
             
             context.beginPath();
-            context.moveTo(internalRadius , 0);
-            context.lineTo(internalRadius + ((size / 2) * step3Incr), 0);
+            context.moveTo(centerX + internalRadius , centerY);
+            context.lineTo(centerX + internalRadius + ((size / 2) * step3Incr), centerY);
             context.stroke();  
 
             context.beginPath();
-            context.moveTo(externalRadius , 0);
-            context.lineTo(externalRadius - ((size / 2) * step3Incr), 0);
+            context.moveTo(centerX + externalRadius , centerY);
+            context.lineTo(centerX + externalRadius - ((size / 2) * step3Incr), centerY);
             context.stroke(); 
 
             if(this.actualStep == 3 && this.actualIncrement > frameStep3-1){
                 this.actualStep = 4;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
 
@@ -127,21 +129,21 @@ var RainbowWeever = {
             //if it is step 4 we use the percentage(same as 1) otherwise the maxium
             var step4Incr = this.actualStep == 4 ? this.actualIncrement / frameStep1 : 1;
 
-            var tmpStartingPoint = -internalRadius - (size / 2);
+            var tmpStartingPoint = centerX - internalRadius - (size / 2);
             
             context.beginPath();
-            context.moveTo(-externalRadius , 0);
-            context.lineTo(tmpStartingPoint - ((size / 2) * step4Incr), 0);
+            context.moveTo(centerX - externalRadius , centerY);
+            context.lineTo(tmpStartingPoint - ((size / 2) * step4Incr), centerY);
             context.stroke();
 
             context.beginPath();
-            context.moveTo(-internalRadius , 0);
-            context.lineTo(tmpStartingPoint + ((size / 2) * step4Incr), 0);
+            context.moveTo(centerX - internalRadius , centerY);
+            context.lineTo(tmpStartingPoint + ((size / 2) * step4Incr), centerY);
             context.stroke();
             
             if(this.actualStep == 4 && this.actualIncrement > frameStep1-1){
                 this.actualStep = 5;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
 
@@ -164,7 +166,7 @@ var RainbowWeever = {
 
             if(this.actualStep == 5 && this.actualIncrement > frameStep2-1){
                 this.actualStep = 6;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
 
@@ -176,24 +178,25 @@ var RainbowWeever = {
             //if it is step 1 we use the percentaga otherwise the maxium
             var step6Incr = this.actualStep == 6 ? this.actualIncrement / frameStep3 : 1;
 
-            var tmpStartingPoint = internalRadius + (size / 2);
+            var tmpStartingPoint = centerX + internalRadius + (size / 2);
             
             context.beginPath();
-            context.moveTo(tmpStartingPoint - ((size / 2) * (1-step6Incr)), 0);
-            context.lineTo(tmpStartingPoint + ((size / 2) * (1-step6Incr)), 0);
+            context.moveTo(tmpStartingPoint - ((size / 2) * (1-step6Incr)), centerY);
+            context.lineTo(tmpStartingPoint + ((size / 2) * (1-step6Incr)), centerY);
             context.stroke();
             
             if(this.actualStep == 6 && this.actualIncrement > frameStep3-1){
                 this.actualStep = 1;
-                this.actualIncrement = 1;
+                this.actualIncrement = 0;
             }
         }
         
-
+        context.closePath();
         //Go back  
         context.translate(-centerX, -centerY);
     }
 }
+
 
 //Get the context and start the program YEAh :D
 window.onload = function(){
@@ -210,6 +213,7 @@ window.onload = function(){
 /*
  * Color animation   
  */
+
 function col(r, g, b) {
     return "rgb(" + r + "," + g + "," + b + ")";
 }
@@ -254,3 +258,4 @@ function colorWOW(context){
     context.strokeStyle = colorizeC.colorize();
     context.stroke();   
 }
+

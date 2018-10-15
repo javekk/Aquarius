@@ -13,7 +13,7 @@ var areaHeight;
 var area = {
     draw : function(){
         area.clear();
-        RainbowWeever.drawStepByStep(context, 100, 100, 100, 300,6,"WOW", 300);
+        RainbowWeever.drawStepByStep(context, 50, 50, 100, 300,6,"WOW", 300);
     } ,
     clear : function() {
         context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
@@ -29,9 +29,6 @@ var RainbowWeever = {
 
     drawStepByStep : function(context, centerX, centerY, internalRadius, externalRadius, stokeSize, strokeStyle, duration){
         
-        //Circles center
-        context.translate(centerX, centerY);
-        
         //Every Frame update, reset for each step
         this.actualIncrement++;
 
@@ -42,9 +39,9 @@ var RainbowWeever = {
         var totalFrames = duration;
         
         //Different frame numbers for each step the ratio io 2-6-2
-        var frameStep1 = 50;
-        var frameStep2 = 100;
-        var frameStep3 = 30;
+        var frameStep1 = 1000;
+        var frameStep2 = 3000;
+        var frameStep3 = 1000;
 
         //Stroke
         if(strokeStyle == "WOW"){
@@ -67,7 +64,7 @@ var RainbowWeever = {
             var tmpStartingPoint = centerX - internalRadius - (size / 2) ;
             
             context.beginPath();
-            context.moveTo(tmpStartingPoint - ((size / 2) * step1Incr) , centerY);
+            context.moveTo(tmpStartingPoint - ((size / 2) * step1Incr), centerY);
             context.lineTo(tmpStartingPoint + ((size / 2) * step1Incr), centerY);
             context.stroke();
             
@@ -192,10 +189,9 @@ var RainbowWeever = {
         }
         
         context.closePath();
-        //Go back  
-        context.translate(-centerX, -centerY);
     }
 }
+
 /*
 
 //Get the context and start the program YEAh :D
@@ -210,10 +206,9 @@ window.onload = function(){
 }
 
 
-/*
- * Color animation   
- */
-/*
+//Color animation   
+ 
+/
 function col(r, g, b) {
     return "rgb(" + r + "," + g + "," + b + ")";
 }
@@ -258,5 +253,4 @@ function colorWOW(context){
     context.strokeStyle = colorizeC.colorize();
     context.stroke();   
 }
-
 */

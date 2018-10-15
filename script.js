@@ -30,9 +30,7 @@ window.onload = function() {
 
 //Init function
 function init(){
-
     area.init();
-
     mainC = new MainC();
 };
 
@@ -137,13 +135,9 @@ function SquareComponent(width, height, color, x, y) {
         creator.create();
     }
 }
-    //Function to create a square componets 
-function RainbowComponent(width, height, color, x, y) {
+//Function to create a square componets 
+function RainbowComponent(color, x, y) {
 
-    //Actual size
-    this.width = width;
-    this.height = height;
-    //Actual position
     this.x = x;
     this.y = y;    
 
@@ -151,7 +145,7 @@ function RainbowComponent(width, height, color, x, y) {
     this.angle = 0;
 
     this.update = function(){
-        RainbowWeever.drawStepByStep(area.ctx, this.x, this.y, 100, 300,6, color, 300); 
+        RainbowWeever.drawStepByStep(area.ctx, this.x, this.y, 100, 300, 6, color, 300); 
     }
     
     this.newPos = function(move, angleDif) {    
@@ -171,13 +165,9 @@ function RainbowComponent(width, height, color, x, y) {
         creator.create();
     }
 }
-
 //Function to create a square componets 
-function FlowerComponent(width, height, color, x, y) {
+function FlowerComponent(color, x, y) {
 
-    //Actual size
-    this.width = width;
-    this.height = height;
     //Actual position
     this.x = x;
     this.y = y;    
@@ -186,8 +176,12 @@ function FlowerComponent(width, height, color, x, y) {
     this.angle = 0;
 
     this.update = function(){
-        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 100, color, 3, 1);
-        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 122, color, 3, -1);  
+        area.ctx.beginPath();
+        area.ctx.arc(this.x, this.y, 100, 0, 2 * Math.PI, false);
+        this.color == "WOW" ? area.ctx.strokeStyle = colorizeC.colorize() : area.ctx.strokeStyle = this.color;
+        area.ctx.stroke();
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 100, this.color, 6, 1);
+        FlowerArcEi.drawFA(area.ctx, this.x, this.y, 5, 122, this.color, 6, -1);  
     }
     this.newPos = function(move, angleDif) {    
 
@@ -284,8 +278,8 @@ var creator = {
 
             switch(Math.round(Math.random()*4)){
                 case 2 : sCs.add(new SquareComponent( 20 ,20, color, x, y));break;
-                case 3 : sCs.add(new FlowerComponent( 20 ,20, color, x, y)); break;
-                case 1 : sCs.add(new RainbowComponent( 20 ,20, color, x, y)); break;
+                case 3 : sCs.add(new FlowerComponent(color, x, y)); break;
+                case 1 : sCs.add(new RainbowComponent(color, x, y)); break;
             }
             
             

@@ -16,7 +16,7 @@ var area = {
         drawFlower();
     } ,
     clear : function() {
-        context.clearRect(-(areaWidth / 2), -(areaHeight / 2), canvas.width, canvas.height);
+        context.clearRect(-(areaWidth / 2), - (areaHeight / 2), canvas.width, canvas.height);
     }   
 };
 
@@ -70,7 +70,7 @@ var FlowerArcEi = {
 
         //Base on the animation angle step, rotate
         context.rotate(0);
-        this.moveAngleAni = this.moveAngleAni >= Math.PI * 2 ? 0 : Math.abs(this.moveAngleAni) + Math.PI * 0.00001;
+        this.moveAngleAni = this.moveAngleAni >= Math.PI * 2 ? 0 : Math.abs(this.moveAngleAni) + Math.PI * 0.00005;
         context.rotate(this.moveAngleAni * rotation);
 
         //Trigonometric functions as fuck
